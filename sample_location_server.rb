@@ -29,12 +29,7 @@
 # the validation code that Dashboard provides. Pass the secret and validation
 # code to this server when you start it:
 #
-#   sample_location_server.rb <secret> <validator>
-#
-# You can change the bind interface (default 0.0.0.0) and port (default 4567)
-# using Sinatra's -o and -p option flags:
-#
-#   sample_location_server.rb -o <interface> -p <port> <secret> <validator>
+#   SECRET=<secret> VALIDATOR=<validator> PORT=4567 ruby sample_location_server.rb
 #
 # Now click the "Validate server" link in CMX Location Push API configuration in
 # Dashboard. Meraki's servers will perform a get to this server, and you will
@@ -122,34 +117,35 @@ require 'digest/sha1'
 # zip content when possible
 use Rack::Deflater
 
-# ---- Parse command-line arguments ----
+# ---- Parse command-line arguments ----]
 
-if ARGV.size < 2
-  # The sinatra gem parses the -o and -p options for us.
-  puts "usage: sample_push_api_server.rb [-o <addr>] [-p <port>] <secret> <validator>"
+
+if ARGV.size > 0
+  puts "usage: sample_push_api_server.rb  (Don't use sinatra -p, use PORT environment variable)"
   exit 1
 end
 
-argOff = 0
-
-if ARGV[0] == '-o' or ARGV[0] == '-p'
-  argOff += 2
-end
-if ARGV[2] == '-o' or ARGV[2] == '-p'
-  argOff += 2
+if !ENV['PORT'] or !ENV['SECRET'] or !ENV['VALIDATOR']
+    puts "PORT SECRET and VALIDATOR are all required environment variables"
+    exit 1
 end
 
-SECRET = ARGV[argOff]
-puts "SECRET is #{SECRET}"
-VALIDATOR = ARGV[argOff + 1]
-puts "VALIDATOR is #{VALIDATOR}"
-
-if ARGV.size > argOff + 2
-  db = "sqlite:/tmp/" + ARGV[argOff + 2]
+if ENV['DB_FILE']
+  db = "sqlite:/tmp/" + ENV['DB_FILE']
 else
   db = "sqlite:memory:"
 end
+
 puts "Writing database to #{db}"
+
+set :port, ENV['PORT'].to_i
+puts "Setting port to ${ENV['PORT']}"
+
+SECRET = ENV['SECRET']
+puts "SECRET is #{SECRET}"
+
+VALIDATOR = ENV['VALIDATOR']
+puts "VALIDATOR is #{VALIDATOR}"
 
 # ---- Load anonimization data --------
 
