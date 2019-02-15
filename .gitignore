@@ -1,2 +1,7 @@
 # Ignore sqlite memory files
 memory:
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

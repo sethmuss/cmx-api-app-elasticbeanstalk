@@ -47,7 +47,23 @@ This application show you how to get started using the [Cisco Meraki](https://me
 - A valid Enterprise license is required for each Meraki AP.
 - Note: this app does not work with other Cisco APs or non-Cisco APs.
 
+## Elastic Beanstalk deployment
 
+### AWS SDK Installation
+You need to have the latest/later Ruby version than 1.9 to use, apparently, the aws-sdk, specifically with 1.9.3 the ```gem install aws-sdk``` command was just hanging... 
+1. ```rvm install "ruby-2.6.1"``` if you don't already have one
+2. ```rvm use 2.6```
+3. ```gem install aws-sdk```
+4. (Don't forget to change back to 1.9 for running the server locally.)
+
+### Deployment
+
+1. In the aws console -> ElasticBeanstalk create a new application (APP_NAME) 
+1. ```awsfed``` (or other AWS SDK credential)
+2. ```eb init --profile=federate```
+    1. select APP_NAME app
+    2. make sure you select Ruby 1.9.3
+3. 
 
 ## Running the app
 Let’s say you plan to run this app on a server you control called pushapi.myserver.com.
