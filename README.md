@@ -64,6 +64,9 @@ You need to have the latest/later Ruby version than 1.9 to use, apparently, the 
     1. select APP_NAME app
     2. make sure you select Ruby 1.9.3
 3. ```eb create APP_NAME-dev --profile=federate --vpc.id VPC --vpc.securitygroups SECURITY_GROUPS --vpc.elbsubnets LOAD_BALANCER_SUBNETS --vpc.ec2subnets EC2_SUBNETS --vpc.elbpublic --envvars SECRET=thesecret,VALIDATOR=thevalidatorcode,PORT=80```
+    1. Subsequent deploys of code will use ```eb deploy --profile=federate```
+
+You may need to update the VALIDATOR configuration option in the aws console for the ElasticBeanstalk app.
 
 ## Running the app
 Let’s say you plan to run this app on a server you control called pushapi.myserver.com.
